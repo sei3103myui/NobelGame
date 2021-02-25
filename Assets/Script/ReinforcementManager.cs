@@ -61,7 +61,7 @@ public class ReinforcementManager : MonoBehaviour
         {
             ItemSelect.SetActive(true);
             EventSystem.current.SetSelectedGameObject(itemfirstObj);
-            playerPrefsCommon.ItemsDataLoad();
+            playerPrefsCommon.BooksDataLoad();
         }
         
         //string bookdataPath = Path.Combine(Application.persistentDataPath, "book_1.csv");
@@ -220,9 +220,9 @@ public class ReinforcementManager : MonoBehaviour
 
     public void ItemStatusGet(int number)
     {
-        selectItemType = float.Parse(PlayerPrefsCommon.ITEMS_DATA[number - 1][0]);
-        selectItemAtk = float.Parse(PlayerPrefsCommon.ITEMS_DATA[number - 1][1]);
-        selectItemMp = float.Parse(PlayerPrefsCommon.ITEMS_DATA[number - 1][2]);
+        selectItemType = float.Parse(PlayerPrefsCommon.BOOKS_DATA[number - 1][0]);
+        selectItemAtk = float.Parse(PlayerPrefsCommon.BOOKS_DATA[number - 1][1]);
+        selectItemMp = float.Parse(PlayerPrefsCommon.BOOKS_DATA[number - 1][2]);
         
     }
 
@@ -236,7 +236,7 @@ public class ReinforcementManager : MonoBehaviour
             {
                 if(v == selectNumber)
                 {
-                    data[number] = PlayerPrefsCommon.ITEMS_DATA[v][h];//タイプはそのまま
+                    data[number] = PlayerPrefsCommon.BOOKS_DATA[v][h];//タイプはそのまま
                     number++;
                     data[number] = string.Format("{0}",atk);
                     number++;
@@ -244,7 +244,7 @@ public class ReinforcementManager : MonoBehaviour
                     number++;
                     break;
                 }
-                data[number] = PlayerPrefsCommon.ITEMS_DATA[v][h];
+                data[number] = PlayerPrefsCommon.BOOKS_DATA[v][h];
                 number++;
             }
         }
@@ -261,7 +261,7 @@ public class ReinforcementManager : MonoBehaviour
             if(gameObject.name == string.Format("Save{0}",s))
             {
                 selectNumber = s;
-                List<string[]> selectdatas = playerPrefsCommon.ItemsDataLoadTest(selectNumber);
+                List<string[]> selectdatas = playerPrefsCommon.BooksDataLoadTest(selectNumber);
                 saveSelectText.text =
                     string.Format("Data：{0}\n\nITEM1＜ATK:{1} MP：{2}＞\n\nITEM2＜ATK:{3} MP：{4}＞\n\nITEM3＜ATK:{5} MP：{6}＞\n\n",
                     gameObject.name,selectdatas[0][1],selectdatas[0][2],selectdatas[1][1], selectdatas[1][2], selectdatas[2][1], selectdatas[2][2]);
@@ -280,6 +280,6 @@ public class ReinforcementManager : MonoBehaviour
         SelectSaveData.SetActive(false);
         ItemSelect.SetActive(true);
         EventSystem.current.SetSelectedGameObject(itemfirstObj);
-        playerPrefsCommon.ItemsDataLoad();
+        playerPrefsCommon.BooksDataLoad();
     }
 }

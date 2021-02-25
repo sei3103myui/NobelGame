@@ -25,6 +25,8 @@ public class TitleManager : MonoBehaviour
     public Text savedataText;
 
     public PlayerPrefsCommon playerPrefsCommon;
+    [Header("作成するデータ数")]
+    [SerializeField]private int createFileNum = 0;
     private int selectNumber = 0;
     private bool isCreate = false;
     private bool isFiles = false;
@@ -62,14 +64,16 @@ public class TitleManager : MonoBehaviour
     /// </summary>
     public void OnStartClick()
     {
-        
+        //セーブファイルが作成されているか確認
         if (File.Exists(path))
         {
+            //保存されているフラグON
             PlayerPrefs.SetInt("CreateFile", 1);
         }
         else
         {
-            playerPrefsCommon.CreateSaveFile(firstfiles);
+            //セーブファイル作成
+            playerPrefsCommon.CreateSaveFile(firstfiles,createFileNum);
             PlayerPrefs.SetInt("CreateFile", 1);
         }
         SELECT_DATA_NUMBER = 0;
@@ -95,7 +99,7 @@ public class TitleManager : MonoBehaviour
             if (gameObject.name == "Save" + i)
             {
                 selectNumber = i;
-                List<string[]> booksdata = playerPrefsCommon.ItemsDataLoadTest(selectNumber);
+                List<string[]> booksdata = playerPrefsCommon.BooksDataLoadTest(selectNumber);
                 savedataText.text =
                     string.Format("Data：{0}\n\nITEM1＜ATK:{1} MP：{2}＞\n\nITEM2＜ATK:{3} MP：{4}＞\n\nITEM3＜ATK:{5} MP：{6}＞\n\n",
                     gameObject.name, booksdata[0][1], booksdata[0][2], booksdata[1][1], booksdata[1][2], booksdata[2][1], booksdata[2][2]);
@@ -150,7 +154,8 @@ public class TitleManager : MonoBehaviour
     {
         
         PlayerPrefs.DeleteAll();
-        playerPrefsCommon.CreateSaveFile(firstfiles);
+        //データ初期化
+        playerPrefsCommon.CreateSaveFile(firstfiles,createFileNum);
         DeleatOption.SetActive(false);
         DefaultObj.SetActive(true);
         EventSystem.current.SetSelectedGameObject(startbutton);
