@@ -70,19 +70,19 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         //アイテムステータスの読み込み
-        playerPrefsCommon.ItemsDataLoad();
+        playerPrefsCommon.BooksDataLoad();
 
-        itemType_1 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[0][0]);
-        itemType_2 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[1][0]);
-        itemType_3 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[2][0]);
+        itemType_1 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[0][0]);
+        itemType_2 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[1][0]);
+        itemType_3 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[2][0]);
 
-        itemATK_1 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[0][1]);
-        itemATK_2 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[1][1]);
-        itemATK_3 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[2][1]);
+        itemATK_1 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[0][1]);
+        itemATK_2 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[1][1]);
+        itemATK_3 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[2][1]);
 
-        itemPOWER_1 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[0][2]);
-        itemPOWER_2 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[1][2]);
-        itemPOWER_3 = float.Parse(PlayerPrefsCommon.ITEMS_DATA[2][2]);
+        itemPOWER_1 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[0][2]);
+        itemPOWER_2 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[1][2]);
+        itemPOWER_3 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[2][2]);
 
         int value = Random.Range(1, 3);
         enemyType = value;
@@ -169,9 +169,10 @@ public class BattleManager : MonoBehaviour
                 turnchenge = true;
                 resultObj.SetActive(true);
                 EventSystem.current.SetSelectedGameObject(resultOkbutton);
-                float newAtk = Mathf.Ceil(Random.Range(1, 7));
-                float newMp = Mathf.Ceil(Random.Range(1, 7));
+                float newAtk = Mathf.Ceil(Random.Range(1, 7));//ランダムにアタックポイントをつける
+                float newMp = Mathf.Ceil(Random.Range(1, 7));//ランダムにマジックポイントをつける
                 resultText.text = string.Format("ステータス\nATK：{0}\nMP：{1}", newAtk, newMp);
+                //割り振られた乱数を渡してセーブ
                 playerPrefsCommon.SaveItem(newAtk, newMp);
             }
         }
