@@ -169,10 +169,11 @@ public class BattleManager : MonoBehaviour
                 turnchenge = true;
                 resultObj.SetActive(true);
                 EventSystem.current.SetSelectedGameObject(resultOkbutton);
+                //素材データ作成
                 float newAtk = Mathf.Ceil(Random.Range(1, 7));//ランダムにアタックポイントをつける
                 float newMp = Mathf.Ceil(Random.Range(1, 7));//ランダムにマジックポイントをつける
                 resultText.text = string.Format("ステータス\nATK：{0}\nMP：{1}", newAtk, newMp);
-                //割り振られた乱数を渡してセーブ
+                //素材データセーブ
                 playerPrefsCommon.SaveItem(newAtk, newMp);
             }
         }

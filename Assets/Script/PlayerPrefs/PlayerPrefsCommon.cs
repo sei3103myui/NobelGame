@@ -12,8 +12,8 @@ public class PlayerPrefsCommon : MonoBehaviour
     public static List<string[]> MATERIALS_DATA = new List<string[]>();
 
 
-    private string bookPath = default;
-    private string materialPath = default;
+    private string bookPath = default;//アイテムデータ保存先用
+    private string materialPath = default;//素材データ保存先用
     private StreamWriter sw;
     private ReinforcementManager reinforcementManager;
 
@@ -21,13 +21,13 @@ public class PlayerPrefsCommon : MonoBehaviour
     private string[] materialName = { "素材1", "素材2", "素材3", "素材4", "素材5", "素材6", "素材7", "素材8", "素材9", "素材10" };
     //素材ファイルのヘッダー
     private string[] materialHeader = { "","ATK", "MP", "TYPE" };
-    // Start is called before the first frame update
+    
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         
@@ -40,9 +40,18 @@ public class PlayerPrefsCommon : MonoBehaviour
         //MPセーブ
         PlayerPrefs.SetFloat("PlayerMP", PlayerStatus.PLAYER_MP);
     }
-    //アイテムの保存
+    //素材データの保存
     public void SaveItem(float atk,float mp)
     {
+        materialPath = Path.Combine(Application.persistentDataPath, string.Format("Items_{0}", TitleManager.SELECT_DATA_NUMBER));
+        //ファイルが見つかったら
+        if (File.Exists(materialPath))
+        {
+            //csvファイルの内容を読み込み
+            MATERIALS_DATA = ItemsLoad(TitleManager.SELECT_DATA_NUMBER);
+
+            //
+        }
         for(int i = 1; i <= 10; i++)//Atkポイントの保存
         {
             if (PlayerPrefs.HasKey(string.Format("MaterialATK{0}_{1}", TitleManager.SELECT_DATA_NUMBER, i)))
@@ -131,7 +140,7 @@ public class PlayerPrefsCommon : MonoBehaviour
     public void CreateSaveFile(string[] firstStatus, int filesNum)
     {
         bookPath = Path.Combine(Application.persistentDataPath, string.Format("book_{0}.csv", TitleManager.SELECT_DATA_NUMBER));
-        materialPath = Path.Combine(Application.persistentDataPath, "Items.csv");
+        materialPath = Path.Combine(Application.persistentDataPath, "Items_0.csv");
         if(!File.Exists(bookPath))//本のデータがなければ
         {
             //本のデータ1～3（book_{n}.csv）を作成
@@ -153,27 +162,80 @@ public class PlayerPrefsCommon : MonoBehaviour
         }
         if(!File.Exists(materialPath))//素材のデータが無い場合
         {
-            StreamWriter sw_material = new StreamWriter(materialPath, false, Encoding.UTF8);
-            if(sw_material != null)
+            for(int m = 0; m <= filesNum; m++)
             {
-                MATERIALS_DATA.Add(materialHeader);
-                //素材テンプレートを入れておく
-                for (int i = 1; i <= materialName.Length; i++)//行 1から素材数まで
-                {
-                    
-                    string zero = string.Format("{0}", materialName[i - 1]);
-                    string[] mt = { zero, "", "", "" };
-                    MATERIALS_DATA.Add(mt);
-                    
-                }
+                string path = Path.Combine(Application.persistentDataPath, string.Format("Items_{0}.csv",m));
 
-                //ファイルにテンプレートを書き込み
-                for (int s = 0; s <= materialName.Length; s++)//行の数
+                StreamWriter sw_material = new StreamWriter(path, false, Encoding.UTF8);
+                if (sw_material != null)
                 {
-                    sw_material.WriteLine(string.Format("{0},{1},{2},{3}", MATERIALS_DATA[s][0], MATERIALS_DATA[s][1], MATERIALS_DATA[s][2], MATERIALS_DATA[s][3]));
+                    MATERIALS_DATA.Add(materialHeader);
+                    //素材テンプレートを入れておく
+                    for (int i = 1; i <= materialName.Length; i++)//行 1から素材数まで
+                    {
+
+                        string zero = string.Format("{0}", materialName[i - 1]);
+                        string[] mt = { zero, "", "", "" };
+                        MATERIALS_DATA.Add(mt);
+
+                    }
+
+                    //ファイルにテンプレートを書き込み
+                    for (int s = 0; s <= materialName.Length; s++)//行の数
+                    {
+                        sw_material.WriteLine(string.Format("{0},{1},{2},{3}", MATERIALS_DATA[s][0], MATERIALS_DATA[s][1], MATERIALS_DATA[s][2], MATERIALS_DATA[s][3]));
+                    }
+                }
+                sw_material.Close();
+            }
+            
+        }
+    }
+
+    public List<string[]> ItemsLoad(int saveNum)
+    {
+        List<string[]> items = new List<string[]>();
+        
+        //パス取得
+        string filepath = Path.Combine(Application.persistentDataPath, string.Format("Items_{0}.csv", saveNum));
+        if (File.Exists(filepath))
+        {
+            using (var sw = new StreamReader(filepath))
+            {
+                while (sw.Peek() != -1)
+                {
+                    string line = sw.ReadLine();
+                    items.Add(line.Split(','));
                 }
             }
-            sw_material.Close();   
         }
+        else
+        {
+            
+        }
+
+        return items;
+    }
+
+    public List<int[]> ItemsFileChange(List<string[]> stringItems)
+    {
+        //数値データを保存するリスト
+        List<int[]> intItems = new List<int[]>();
+        
+        //行
+        for(int h = 1; h <= stringItems.Count; h++)
+        {
+            
+            for(int v = 1; v <= stringItems[h].Length; v++)
+            {
+                //データがあれば
+                if(stringItems[h][v] == "")
+                {
+                    
+                }
+            }
+            
+        }
+        return intItems;
     }
 }
