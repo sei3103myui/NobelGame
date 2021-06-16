@@ -37,13 +37,13 @@ public class ReinforcementManager : MonoBehaviour
     public PlayerPrefsCommon playerPrefsCommon;
     private int selectNumber = 0;
     private int MaterialNumber = 0;
-    private float selectAtk = 0;
-    private float selectMp = 0;
-    private float selectItemType = 0; 
-    private float selectItemAtk = 0;
-    private float selectItemMp = 0;
-    private float nextAtk = 0;
-    private float nextMp = 0;
+    private int selectAtk = 0;
+    private int selectMp = 0;
+    private int selectItemType = 0; 
+    private int selectItemAtk = 0;
+    private int selectItemMp = 0;
+    private int nextAtk = 0;
+    private int nextMp = 0;
     private string typename = "";
     //private List<string[]> bookdatas = new List<string[]>();
     
@@ -96,49 +96,47 @@ public class ReinforcementManager : MonoBehaviour
     /// 強化する所持アイテムの選択
     /// </summary>
     /// <param name="gameObject"></param>
-    public void OnClickItemSelect(GameObject gameObject)
+    public void OnClickItemSelect(int ItemNumber)
     {
         itemOkObj.SetActive(true);
-        for(int num = 1; num <= 3; num++)
-        {
-            if(gameObject.name == "Item"+ num)
-            {
-                selectNumber = num - 1;
-                selectText.text = string.Format("アイテム{0}でいいですか?", num);
-                ItemStatusGet(num);
 
-            }
-        }
-        
+        selectNumber = ItemNumber;
+        selectText.text = string.Format("アイテム{0}でいいですか?", ItemNumber + 1);
+       
+
     }
-    //
-    public void OnClickPreview(GameObject gameObject)
+    public void OnItemPreview(int itemNumber)
     {
-        
-        for(int i = 1; i <= 10; i++)
+        if(PlayerPrefsCommon.MaterialsPlayData[itemNumber][0] == 0)
         {
-            if(gameObject.name == "Material" + i)
+            if (stonefirstObj.activeInHierarchy)
             {
-                if (PlayerPrefs.HasKey(string.Format("MaterialATK{0}_{1}", TitleManager.SELECT_DATA_NUMBER, i)))
-                {
-                    MaterialNumber = i;
-                    selectAtk = PlayerPrefs.GetFloat(string.Format("MaterialATK{0}_{1}", TitleManager.SELECT_DATA_NUMBER, i));
-                    selectMp = PlayerPrefs.GetFloat(string.Format("MaterialMP{0}_{1}", TitleManager.SELECT_DATA_NUMBER, i));
-                    previewText.text = string.Format("ATK：{0}\nMP：{1}", selectAtk, selectMp);
-                    stonefirstObj.SetActive(true);
-                }
-                else
-                {
-                    if (stonefirstObj.activeInHierarchy)
-                    {
-                        stonefirstObj.SetActive(false);
-                    }
-                    previewText.text = "素材がありません";
-                }
+                stonefirstObj.SetActive(false);
             }
+            previewText.text = "素材がありません";   
         }
-        
+        else
+        {
+            selectAtk = PlayerPrefsCommon.MaterialsPlayData[itemNumber][0];
+            selectMp = PlayerPrefsCommon.MaterialsPlayData[itemNumber][1];
+            string type = "none";
+            switch (PlayerPrefsCommon.MaterialsPlayData[itemNumber][2])
+            {
+                case 1:
+                    type = "Sky";
+                    break;
+                case 2:
+                    type = "Sea";
+                    break;
+                case 3:
+                    type = "Earth";
+                    break;
+            }
+            previewText.text = string.Format("ATK：{0}\nMP：{1}\nTYPE：{2}", selectAtk, selectMp, type);
+            stonefirstObj.SetActive(true);//合成ボタン
+        }
     }
+
     /// <summary>
     /// 各ウィンドウの確認画面処理
     /// </summary>
@@ -147,6 +145,9 @@ public class ReinforcementManager : MonoBehaviour
         //所持アイテム選択画面が動的なら
         if (ItemSelect.activeInHierarchy)
         {
+            selectItemType = PlayerPrefsCommon.BooksPlayData[selectNumber][0];
+            selectItemAtk = PlayerPrefsCommon.BooksPlayData[selectNumber][1];
+            selectItemMp = PlayerPrefsCommon.BooksPlayData[selectNumber][2];
             ItemSelect.SetActive(false);
             StoneSelect.SetActive(true);
             EventSystem.current.SetSelectedGameObject(materialfirstObj);
@@ -176,15 +177,18 @@ public class ReinforcementManager : MonoBehaviour
         else if (resultItem.activeInHierarchy)
         {
             //データ保存処理
-            string[] nextBooksStatus = NextItemStatus(nextAtk,nextMp);
-            
-            playerPrefsCommon.SavebookFile(nextBooksStatus);
-            //素材データ削除
-            PlayerPrefs.DeleteKey(string.Format("MaterialATK{0}_{1}", TitleManager.SELECT_DATA_NUMBER, MaterialNumber));
-            PlayerPrefs.DeleteKey(string.Format("MaterialMP{0}_{1}", TitleManager.SELECT_DATA_NUMBER, MaterialNumber));
+            PlayerPrefsCommon.BooksPlayData[selectNumber][1] = nextAtk;
+            PlayerPrefsCommon.BooksPlayData[selectNumber][2] = nextMp;
+            PlayerPrefsCommon.BookPlaydataStringFormat();
+
+            //素材削除
+            PlayerPrefsCommon.MaterialDataDelete(selectNumber);
+            PlayerPrefsCommon.PlaydataStringFormat();
+
             resultItem.SetActive(false);
-            ItemSelect.SetActive(true);
             itemOkObj.SetActive(false);
+            ItemSelect.SetActive(true);
+            
             selectText.text = null;
             EventSystem.current.SetSelectedGameObject(itemfirstObj);
         }
@@ -218,29 +222,22 @@ public class ReinforcementManager : MonoBehaviour
         }
     }
 
-    public void ItemStatusGet(int number)
-    {
-        selectItemType = float.Parse(PlayerPrefsCommon.BOOKS_DATA[number - 1][0]);
-        selectItemAtk = float.Parse(PlayerPrefsCommon.BOOKS_DATA[number - 1][1]);
-        selectItemMp = float.Parse(PlayerPrefsCommon.BOOKS_DATA[number - 1][2]);
-        
-    }
 
-    public string[] NextItemStatus(float atk ,float mp)
+    public string[] NextItemStatus(float atk, float mp)
     {
         string[] data = new string[9];
         int number = 0;
         for (int v = 0; v < 3; v++)
         {
-            for(int h = 0; h < 3; h++)
+            for (int h = 0; h < 3; h++)
             {
-                if(v == selectNumber)
+                if (v == selectNumber)
                 {
                     data[number] = PlayerPrefsCommon.BOOKS_DATA[v][h];//タイプはそのまま
                     number++;
-                    data[number] = string.Format("{0}",atk);
+                    data[number] = string.Format("{0}", atk);
                     number++;
-                    data[number] = string.Format("{0}",mp);
+                    data[number] = string.Format("{0}", mp);
                     number++;
                     break;
                 }
