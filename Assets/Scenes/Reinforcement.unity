@@ -519,11 +519,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
         m_MethodName: OnClickItemSelect
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 150339225}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -730,12 +730,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 221732203}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1313,11 +1313,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
         m_MethodName: OnClickItemSelect
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 413317700}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1524,12 +1524,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 455799032}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2129,12 +2129,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 725677440}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2629,10 +2629,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
         m_MethodName: OnClickItemSelect
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 855398329}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3049,12 +3049,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 940053679}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 7
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4295,12 +4295,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1331181942}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -4644,11 +4644,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1379089018}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5460,12 +5460,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1807619416}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6089,12 +6089,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 2089868404}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 9
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6202,12 +6202,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 2105165153}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6335,12 +6335,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1246246799}
         m_TargetAssemblyTypeName: ReinforcementManager, Assembly-CSharp
-        m_MethodName: OnClickPreview
-        m_Mode: 2
+        m_MethodName: OnItemPreview
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 2117420569}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

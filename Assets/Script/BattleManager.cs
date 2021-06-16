@@ -70,19 +70,28 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         //アイテムステータスの読み込み
-        playerPrefsCommon.BooksDataLoad();
+        //playerPrefsCommon.SaveFilesLoad();
+        //playerPrefsCommon.PlaydataNewLoad();
+        if(PlayerPrefsCommon.BOOKS_DATA.Count == 0 || PlayerPrefsCommon.MATERIALS_DATA.Count == 0)
+        {
+            PlayerPrefsCommon.SaveFilesLoad();
+        }
+        if(PlayerPrefsCommon.BooksPlayData.Count == 0)
+        {
+            //プレイデータが空なら読み込む
+            PlayerPrefsCommon.PlaydataNewLoad();
+        }
+        itemType_1 = PlayerPrefsCommon.BooksPlayData[0][0];
+        itemType_2 = PlayerPrefsCommon.BooksPlayData[1][0];
+        itemType_3 = PlayerPrefsCommon.BooksPlayData[2][0];
 
-        itemType_1 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[0][0]);
-        itemType_2 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[1][0]);
-        itemType_3 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[2][0]);
+        itemATK_1 = PlayerPrefsCommon.BooksPlayData[0][1];
+        itemATK_2 = PlayerPrefsCommon.BooksPlayData[1][1];
+        itemATK_3 = PlayerPrefsCommon.BooksPlayData[2][1];
 
-        itemATK_1 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[0][1]);
-        itemATK_2 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[1][1]);
-        itemATK_3 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[2][1]);
-
-        itemPOWER_1 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[0][2]);
-        itemPOWER_2 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[1][2]);
-        itemPOWER_3 = float.Parse(PlayerPrefsCommon.BOOKS_DATA[2][2]);
+        itemPOWER_1 = PlayerPrefsCommon.BooksPlayData[0][2];
+        itemPOWER_2 = PlayerPrefsCommon.BooksPlayData[1][2];
+        itemPOWER_3 = PlayerPrefsCommon.BooksPlayData[2][2];
 
         int value = Random.Range(1, 3);
         enemyType = value;
@@ -169,11 +178,14 @@ public class BattleManager : MonoBehaviour
                 turnchenge = true;
                 resultObj.SetActive(true);
                 EventSystem.current.SetSelectedGameObject(resultOkbutton);
-                float newAtk = Mathf.Ceil(Random.Range(1, 7));//ランダムにアタックポイントをつける
-                float newMp = Mathf.Ceil(Random.Range(1, 7));//ランダムにマジックポイントをつける
+                //素材データ作成
+                int newAtk = Random.Range(1, 7);//ランダムにアタックポイントをつける
+                int newMp = Random.Range(1, 10);//ランダムにマジックポイントをつける
+                int newtype = Random.Range(1, 3);
                 resultText.text = string.Format("ステータス\nATK：{0}\nMP：{1}", newAtk, newMp);
-                //割り振られた乱数を渡してセーブ
-                playerPrefsCommon.SaveItem(newAtk, newMp);
+                //素材データセーブ
+                PlayerPrefsCommon.SaveItem(newAtk, newMp , newtype);
+                PlayerPrefsCommon.PlaydataStringFormat();
             }
         }
 

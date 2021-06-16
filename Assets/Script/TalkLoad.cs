@@ -39,37 +39,14 @@ public class TalkLoad : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //csvFile = Resources.Load("CSV/Talk/" + csvFileName) as TextAsset;
-        //StringReader reader = new StringReader(csvFile.text);
-
-        //while (reader.Peek() != -1)
-        //{
-        //    string line = reader.ReadLine();
-        //    csvDatas.Add(line.Split(','));
-        //}
-
         talkText.text = null;//テキストの初期化
         if(talkmode == TalkMode.OnName)
         {
             nameText.text = null;
-        }
-        
+        }   
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void FixedUpdate()
-    {
-        //if (Keyboard.current.spaceKey.isPressed && !isTalk)
-        //{
-        //    isTalk = true;
-        //    StartCoroutine(Talking());
-        //}
-    }
-
+   
     public void CSVLoad()
     {
         csvFile = Resources.Load("CSV/Talk/" + csvFileName) as TextAsset;

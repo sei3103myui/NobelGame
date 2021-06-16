@@ -16,19 +16,35 @@ public class MapManager : MonoBehaviour
     public GameObject episodeSelect;
     public GameObject battleModeSelect;
     public GameObject citySelect;//街マップの親
+    public GameObject options;
+
     public GameObject firstChapter;
     public GameObject firstSelect;
     public GameObject firstEpisode;
     public GameObject firstMode;
     public GameObject firstCity;//街マップ最初の選択
+    public GameObject firstOption;
+
     public GameObject battleStartButton;
     public Text chapterName;
 
     public AudioClip mapBgm;
 
     private string selectTextName;
-    private bool isOption = false;
-    // Start is called before the first frame update
+    
+    private void Awake()
+    {
+        if(PlayerPrefsCommon.BOOKS_DATA.Count == 0 || PlayerPrefsCommon.MATERIALS_DATA.Count == 0 )
+        {
+            //保存データが無ければセーブデータ読み込み
+            PlayerPrefsCommon.SaveFilesLoad();
+        }
+        if (PlayerPrefsCommon.BooksPlayData.Count == 0 || PlayerPrefsCommon.MaterialsPlayData.Count == 0)
+        {
+            //プレイデータが空なら読み込む
+            PlayerPrefsCommon.PlaydataNewLoad();
+        }
+    }
     void Start()
     {
         AudioManager2D.Instance.AudioBgm.clip = mapBgm;
@@ -36,18 +52,24 @@ public class MapManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstSelect);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void FixedUpdate()
+    private void Update()
     {
         //OKeyでオプション表示(未実装)
-        if (Keyboard.current.oKey.isPressed && !isOption)
+        if (Keyboard.current.oKey.wasPressedThisFrame && !options.activeInHierarchy)
         {
-            isOption = true;
+            options.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(firstOption);
         }
+        if (Keyboard.current.backspaceKey.wasPressedThisFrame && options.activeInHierarchy)
+        {
+            options.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(firstSelect);
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
     /// <summary>
     /// ストーリーモード選択
@@ -163,6 +185,13 @@ public class MapManager : MonoBehaviour
     /// ショップへ移動
     /// </summary>
     public void OnClickShop()
+    {
+
+    }
+    /// <summary>
+    /// 変更したデータをセーブする
+    /// </summary>
+    public void OnClickSave()
     {
 
     }
