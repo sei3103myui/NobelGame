@@ -281,7 +281,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 829271676}
         m_TargetAssemblyTypeName: PrologueManager, Assembly-CSharp
         m_MethodName: OnClickOK
         m_Mode: 1
@@ -470,9 +470,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -493,8 +493,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 829271674}
-        m_TargetAssemblyTypeName: EpisodeManager, Assembly-CSharp
+      - m_Target: {fileID: 829271676}
+        m_TargetAssemblyTypeName: PrologueManager, Assembly-CSharp
         m_MethodName: OnClickAuto
         m_Mode: 1
         m_Arguments:
@@ -676,7 +676,7 @@ GameObject:
   - component: {fileID: 570135268}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Canvas
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -854,6 +854,7 @@ GameObject:
   m_Component:
   - component: {fileID: 829271675}
   - component: {fileID: 829271674}
+  - component: {fileID: 829271676}
   m_Layer: 0
   m_Name: TalkManager
   m_TagString: Untagged
@@ -870,17 +871,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 829271673}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 731272126b18f0e4ab26ed1bfa4da731, type: 3}
+  m_Script: {fileID: 11500000, guid: 588f3fc373e9b5e45b8422bbd28884c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playMode: 1
-  nametxt: {fileID: 1125885869}
-  storytxt: {fileID: 633143552}
-  talkSpeed: 0.1
-  episodeKeyConfig: 1
-  filePath: Episode1
-  nextSceneName: Map
-  nextButton: {fileID: 9944862}
+  talkmode: 1
+  talkingMode: 1
+  csvFileName: Episode1
+  talkText: {fileID: 633143552}
+  nameText: {fileID: 1125885869}
+  buttonImage: {fileID: 9944862}
+  isTalk: 0
 --- !u!4 &829271675
 Transform:
   m_ObjectHideFlags: 0
@@ -895,6 +895,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &829271676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829271673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7ece1fed51883845b3fdb343ce42c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  talkingModes: 00000000
+  csvfilesName:
+  - Episode1
+  nextSceneName: Map
+  talkLoad: {fileID: 829271674}
+  prologueBgm: {fileID: 8300000, guid: c018838d64fa48442b4961e462f2d25f, type: 3}
+  skipMenu: {fileID: 1056141926}
+  firstSkip: {fileID: 1400835443}
 --- !u!1 &881795384
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,9 +975,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.5283019, g: 0.5258099, b: 0.5258099, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -978,9 +998,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 829271674}
-        m_TargetAssemblyTypeName: EpisodeManager, Assembly-CSharp
-        m_MethodName: OnClicSkip
+      - m_Target: {fileID: 829271673}
+        m_TargetAssemblyTypeName: PrologueManager, Assembly-CSharp
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1364,9 +1384,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'NO
-
-'
+  m_Text: NO
 --- !u!222 &1246175917
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1458,7 +1476,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 829271676}
         m_TargetAssemblyTypeName: PrologueManager, Assembly-CSharp
         m_MethodName: OnClickCancel
         m_Mode: 1

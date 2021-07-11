@@ -364,6 +364,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1262819771}
+  - component: {fileID: 1262819772}
   - component: {fileID: 1262819770}
   m_Layer: 0
   m_Name: GameManager
@@ -381,10 +382,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1262819769}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a9be1d98b0412e409ddbd802bb6e49c, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e60b8da2ba30384784da4b1f2eb76ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 2146800771}
 --- !u!4 &1262819771
 Transform:
   m_ObjectHideFlags: 0
@@ -399,6 +399,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1262819772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262819769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d126aef3458e190449ff9dc1953db92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefsCommon: {fileID: 1262819770}
 --- !u!1 &1930710714
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +470,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &1930710717
 Canvas:
   m_ObjectHideFlags: 0

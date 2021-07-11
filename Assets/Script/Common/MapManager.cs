@@ -16,19 +16,37 @@ public class MapManager : MonoBehaviour
     public GameObject episodeSelect;
     public GameObject battleModeSelect;
     public GameObject citySelect;//街マップの親
+    public GameObject options;
+
     public GameObject firstChapter;
     public GameObject firstSelect;
     public GameObject firstEpisode;
     public GameObject firstMode;
     public GameObject firstCity;//街マップ最初の選択
+    public GameObject firstOption;
+
     public GameObject battleStartButton;
     public Text chapterName;
 
     public AudioClip mapBgm;
 
     private string selectTextName;
-    private bool isOption = false;
-    // Start is called before the first frame update
+    
+    private void Awake()
+    {
+        if(PlayerPrefsCommon.BOOKS_DATA.Count == 0 || PlayerPrefsCommon.MATERIALS_DATA.Count == 0 )
+        {
+            //保存データが無ければセーブデータ読み込み
+            PlayerPrefsCommon.SaveFilesLoad();
+            Debug.Log("データ読み込み");
+        }
+        if (PlayerPrefsCommon.BooksPlayData.Count == 0 || PlayerPrefsCommon.MaterialsPlayData.Count == 0)
+        {
+            //プレイデータが空なら読み込む
+            PlayerPrefsCommon.PlaydataNewLoad();
+            Debug.Log("プレイデータ読み込み");
+        }
+    }
     void Start()
     {
         AudioManager2D.Instance.AudioBgm.clip = mapBgm;
@@ -36,18 +54,24 @@ public class MapManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstSelect);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        //O Keyでオプション表示
+        if (Keyboard.current.oKey.wasPressedThisFrame && !options.activeInHierarchy)
+        {
+            options.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(firstOption);
+        }
+        if (Keyboard.current.backspaceKey.wasPressedThisFrame && options.activeInHierarchy)
+        {
+            options.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(firstSelect);
+        }
     }
+
     private void FixedUpdate()
     {
-        //OKeyでオプション表示(未実装)
-        if (Keyboard.current.oKey.isPressed && !isOption)
-        {
-            isOption = true;
-        }
+        
     }
     /// <summary>
     /// ストーリーモード選択
@@ -165,5 +189,30 @@ public class MapManager : MonoBehaviour
     public void OnClickShop()
     {
 
+    }
+    public void OnClickStatus(GameObject StatusPanel)
+    {
+        
+        Text hp = StatusPanel.transform.Find("backImage/PlayerHp/HpText").gameObject.GetComponent<Text>();
+        Text mp = StatusPanel.transform.Find("backImage/PlayerHp/Mp/MpText").gameObject.GetComponent<Text>();
+        Text gord = StatusPanel.transform.Find("backImage/GordText").gameObject.GetComponent<Text>();
+        hp.text = string.Format("HP:{0}", PlayerStatus.PLAYER_HP);
+        mp.text = string.Format("MP:{0}", PlayerStatus.PLAYER_MP);
+        gord.text = string.Format("${0}", PlayerStatus.Gord);
+        StatusPanel.SetActive(true);
+        StartCoroutine(BackPanelCoroutine(StatusPanel, null));
+    }
+
+    public IEnumerator BackPanelCoroutine(GameObject backPanel,GameObject nextPanel)
+    {
+        while (!Keyboard.current.backspaceKey.isPressed)
+        {
+            yield return null;
+        }
+        backPanel.SetActive(false);
+        if(nextPanel != null)
+        {
+            nextPanel.SetActive(true);
+        }
     }
 }
