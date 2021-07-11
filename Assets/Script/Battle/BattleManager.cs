@@ -62,16 +62,15 @@ public class BattleManager : MonoBehaviour
     public PlayerPrefsCommon playerPrefsCommon;
     public GameObject resultOkbutton;
 
+    
     private int enemyType = 1;
     private float enemyHp = 0;
     private float enemyAtk = 0;
     private bool turnchenge = false;
-    private PlayerStatus playerStatus;
+    private PlayerStatus playStatus;
     private void Awake()
     {
-        //アイテムステータスの読み込み
-        //playerPrefsCommon.SaveFilesLoad();
-        //playerPrefsCommon.PlaydataNewLoad();
+        
         if(PlayerPrefsCommon.BOOKS_DATA.Count == 0 || PlayerPrefsCommon.MATERIALS_DATA.Count == 0)
         {
             PlayerPrefsCommon.SaveFilesLoad();
@@ -114,6 +113,7 @@ public class BattleManager : MonoBehaviour
         // Start is called before the first frame update
     void Start()
     {
+        playStatus = PlayerStatus.Instance;
         AudioManager2D.Instance.AudioBgm.clip = battleBgm;
         AudioManager2D.Instance.AudioBgm.Play();
         battleTurn = BattleMode.Player;
@@ -127,7 +127,7 @@ public class BattleManager : MonoBehaviour
         {
             if (!turnchenge)
             {
-                if(PlayerStatus.PLAYER_MP <= 0)
+                if(PlayerStatus.PLAYER_HP <= 0)
                 {
                     battleText.text = "MPが足りない！\n休んでMPの回復を待つことにした";
                     StartCoroutine(turnCoroutine(BattleMode.Enemy));
@@ -185,7 +185,7 @@ public class BattleManager : MonoBehaviour
                 resultText.text = string.Format("ステータス\nATK：{0}\nMP：{1}", newAtk, newMp);
                 //素材データセーブ
                 PlayerPrefsCommon.SaveItem(newAtk, newMp , newtype);
-                PlayerPrefsCommon.PlaydataStringFormat();
+                PlayerPrefsCommon.MaterialPlaydataStringFormat();
             }
         }
 
@@ -215,8 +215,8 @@ public class BattleManager : MonoBehaviour
         enemyHpGage.fillAmount = enemyHp / 100;
 
         enemyHpText.text = string.Format("HP：{0}",enemyHp);
-        playerHpText.text = string.Format("HP：{0}",PlayerStatus.PLAYER_HP);
-        playerMpText.text = string.Format("MP：{0}",PlayerStatus.PLAYER_MP);
+        playerHpText.text = string.Format("HP：{0}", PlayerStatus.PLAYER_HP);
+        playerMpText.text = string.Format("MP：{0}", PlayerStatus.PLAYER_MP);
     }
 
     public void OnClick1()
@@ -224,7 +224,7 @@ public class BattleManager : MonoBehaviour
         items.SetActive(false);
         battleText.text += string.Format("\nアイテム1を選択\nモンスターに{0}のダメージ!!\n",itemATK_1);
         enemyHp -= itemATK_1;
-        battleText.text += string.Format("MPを{0}消費した", itemPOWER_1); 
+        battleText.text += string.Format("MPを{0}消費した", itemPOWER_1);
         PlayerStatus.PLAYER_MP -= itemPOWER_1;
         if(PlayerStatus.PLAYER_MP <= 0)
         {

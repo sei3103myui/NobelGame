@@ -183,7 +183,7 @@ public class ReinforcementManager : MonoBehaviour
 
             //素材削除
             PlayerPrefsCommon.MaterialDataDelete(selectNumber);
-            PlayerPrefsCommon.PlaydataStringFormat();
+            PlayerPrefsCommon.MaterialPlaydataStringFormat();
 
             resultItem.SetActive(false);
             itemOkObj.SetActive(false);

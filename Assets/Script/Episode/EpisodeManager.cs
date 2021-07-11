@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public enum EpisodeMode
 {
@@ -49,6 +50,8 @@ public class EpisodeManager : MonoBehaviour
     protected Canvas mainCanvas;
     [Header("拡張子なしCSVファイルの名前")]
     [SerializeField] private string filePath;
+    [Header("再生終了後のシーン名")]
+    [SerializeField] private string nextSceneName; 
     [SerializeField] private GameObject nextButton;
     private GameObject choicePanel;
     private int choiceNum = 0;
@@ -75,7 +78,7 @@ public class EpisodeManager : MonoBehaviour
     {
         episodefileList = new List<string[]>();
         //csvファイルの読み込み
-        csvfile = Resources.Load("CSV/" + filePath) as TextAsset;
+        csvfile = Resources.Load("CSV/Talk/" + filePath) as TextAsset;
 
         StringReader reader = new StringReader(csvfile.text);
 
@@ -165,6 +168,7 @@ public class EpisodeManager : MonoBehaviour
             yield return null;
         }
         playMode = EpisodePlayMode.End;
+        NextSceneLoad();
     }
     /// <summary>
     /// 1行再生処理
@@ -269,6 +273,9 @@ public class EpisodeManager : MonoBehaviour
         yield return null;
     }
 
+    /// <summary>
+    /// 分岐選択UI表示処理
+    /// </summary>
     public void LoadUI()
     {
         //選択肢の数に合うButtonが入ったパネルを生成（Prefab）
@@ -335,5 +342,15 @@ public class EpisodeManager : MonoBehaviour
             episodeKeyConfig = EpisodeKeyConfig.Skip;
         }
         
+    }
+
+
+    public void NextSceneLoad()
+    {
+        //遷移先が入力されていたらシーン遷移
+        if(nextSceneName != null)
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
     }
 }

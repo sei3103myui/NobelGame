@@ -38,11 +38,13 @@ public class MapManager : MonoBehaviour
         {
             //保存データが無ければセーブデータ読み込み
             PlayerPrefsCommon.SaveFilesLoad();
+            Debug.Log("データ読み込み");
         }
         if (PlayerPrefsCommon.BooksPlayData.Count == 0 || PlayerPrefsCommon.MaterialsPlayData.Count == 0)
         {
             //プレイデータが空なら読み込む
             PlayerPrefsCommon.PlaydataNewLoad();
+            Debug.Log("プレイデータ読み込み");
         }
     }
     void Start()
@@ -54,7 +56,7 @@ public class MapManager : MonoBehaviour
 
     private void Update()
     {
-        //OKeyでオプション表示(未実装)
+        //O Keyでオプション表示
         if (Keyboard.current.oKey.wasPressedThisFrame && !options.activeInHierarchy)
         {
             options.SetActive(true);
@@ -188,11 +190,29 @@ public class MapManager : MonoBehaviour
     {
 
     }
-    /// <summary>
-    /// 変更したデータをセーブする
-    /// </summary>
-    public void OnClickSave()
+    public void OnClickStatus(GameObject StatusPanel)
     {
+        
+        Text hp = StatusPanel.transform.Find("backImage/PlayerHp/HpText").gameObject.GetComponent<Text>();
+        Text mp = StatusPanel.transform.Find("backImage/PlayerHp/Mp/MpText").gameObject.GetComponent<Text>();
+        Text gord = StatusPanel.transform.Find("backImage/GordText").gameObject.GetComponent<Text>();
+        hp.text = string.Format("HP:{0}", PlayerStatus.PLAYER_HP);
+        mp.text = string.Format("MP:{0}", PlayerStatus.PLAYER_MP);
+        gord.text = string.Format("${0}", PlayerStatus.Gord);
+        StatusPanel.SetActive(true);
+        StartCoroutine(BackPanelCoroutine(StatusPanel, null));
+    }
 
+    public IEnumerator BackPanelCoroutine(GameObject backPanel,GameObject nextPanel)
+    {
+        while (!Keyboard.current.backspaceKey.isPressed)
+        {
+            yield return null;
+        }
+        backPanel.SetActive(false);
+        if(nextPanel != null)
+        {
+            nextPanel.SetActive(true);
+        }
     }
 }

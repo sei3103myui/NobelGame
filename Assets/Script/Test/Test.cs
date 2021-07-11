@@ -52,7 +52,7 @@ public class Test : MonoBehaviour
         yield return new WaitForSeconds(1);
         PlayerPrefsCommon.SaveItem(7, 5, 2);
         yield return new WaitForSeconds(1);
-        PlayerPrefsCommon.PlaydataStringFormat();
+        PlayerPrefsCommon.MaterialPlaydataStringFormat();
         yield return new WaitForSeconds(1);
         playerPrefsCommon.SaveItemFiles();
         //for (int i = 0; i < PlayerPrefsCommon.MaterialsPlayData.Count; i++)

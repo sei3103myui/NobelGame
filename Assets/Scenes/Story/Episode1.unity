@@ -878,7 +878,8 @@ MonoBehaviour:
   storytxt: {fileID: 633143552}
   talkSpeed: 0.1
   episodeKeyConfig: 1
-  filePath: test
+  filePath: Episode1
+  nextSceneName: Map
   nextButton: {fileID: 9944862}
 --- !u!4 &829271675
 Transform:
