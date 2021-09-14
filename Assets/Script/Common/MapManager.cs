@@ -99,7 +99,8 @@ public class MapManager : MonoBehaviour
     /// <param name="buttonText"></param>
     public void OnClickEpisode(Text buttonText)
     {
-        selectTextName = buttonText.text;
+        selectTextName = "Episode1";
+        SELECT_EPISODE_NAME = buttonText.text;
         AudioManager2D.Instance.AudioBgm.Stop();
         SceneManager.LoadScene(selectTextName);
     }

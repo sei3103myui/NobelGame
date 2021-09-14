@@ -34,6 +34,7 @@ public class EpisodeManager : MonoBehaviour
     public EpisodePlayMode playMode = EpisodePlayMode.Wait;
     public Text nametxt;//キャラクターの名前を格納するテキスト
     public Text storytxt;//ストーリーを格納するテキスト
+    public Image BackImage;
 
     [Header("文字送りの速さ")]
     public float talkSpeed = 0.1f;
@@ -49,13 +50,14 @@ public class EpisodeManager : MonoBehaviour
     private GameObject[] ButtonsObj;
     protected Canvas mainCanvas;
     [Header("拡張子なしCSVファイルの名前")]
-    [SerializeField] private string filePath;
+    public string filePath;
     [Header("再生終了後のシーン名")]
     [SerializeField] private string nextSceneName; 
     [SerializeField] private GameObject nextButton;
     private GameObject choicePanel;
     private int choiceNum = 0;
     private int selectChoiceNum = 0;
+    private AudioClip bgmClip;
 
     private void Awake()
     {
@@ -73,7 +75,10 @@ public class EpisodeManager : MonoBehaviour
             StartCoroutine(StoryCoroutine());
         }
     }
-
+    /// <summary>
+    /// CSVファイルの読み込み
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator LoadEpisode()
     {
         episodefileList = new List<string[]>();
@@ -99,53 +104,70 @@ public class EpisodeManager : MonoBehaviour
 
         for(int i = 1; i < episodefileList.Count; i++)
         {
-            if(episodefileList[i][0] == "")
+            string command = episodefileList[i][0];//コマンドを取得
+            switch (command)
             {
-                episodeMode = EpisodeMode.Story;
-                //ストーリー再生処理
-                yield return StartCoroutine(talkingCoroutine(i));
-                
-                lineNum++;
-
-            }else if(episodefileList[i][0] == "Choices")
-            {
-                episodeMode = EpisodeMode.Choices;
-
-                //分岐数チェック
-                if (episodefileList[i][1] != "")
-                {
-                    choiceNum = int.Parse(episodefileList[i][1]);
-                    LoadUI();
-                    
-                }
-                yield return new WaitForSeconds(1);
-                //選択肢が押されるまで待つ
-                selectChoiceNum = 0;
-                
-                while (selectChoiceNum == 0) yield return null;
-                
-                lineNum += selectChoiceNum - 1;//選択肢と同じ行番号を取得
-                string choicetitle = episodefileList[lineNum][2];//分岐先名を取得
-                for(int num = lineNum; num < episodefileList.Count; num++)
-                {
-                    
-                    if(episodefileList[num][0] == choicetitle)
+                case "BackImage":                   
+                    string imageFile = episodefileList[i][3];
+                    if(imageFile != "")
                     {
-                        lineNum = num;
-                        break;
+                        BackImage.sprite = Resources.Load<Sprite>($"BackImage/{imageFile}");
+                    }                   
+                    yield return null;
+                    break;
+                case "BGM":
+                    string audioFile = episodefileList[i][3];
+                    if(audioFile != "")
+                    {
+                        bgmClip = Resources.Load($"Audio/{audioFile}") as AudioClip;
+                        AudioManager2D.Instance.AudioBgm.clip = bgmClip;
+                        AudioManager2D.Instance.AudioBgm.Play();
+                    }                    
+                    yield return null;
+                    break;             
+                case "Choices":
+                    episodeMode = EpisodeMode.Choices;
+
+                    //分岐数チェック
+                    if (episodefileList[i][1] != "")
+                    {
+                        choiceNum = int.Parse(episodefileList[i][1]);
+                        yield return StartCoroutine(LoadUI());
+
                     }
-                }
-                
-                yield return StartCoroutine(talkingCoroutine(lineNum));
-                //進んだ行番号へ更新
-                i = lineNum;
-                lineNum++;
+                    
+                    //選択肢が押されるまで待つ
+                    selectChoiceNum = 0;
+
+                    while (selectChoiceNum == 0) yield return null;
+
+                    lineNum += selectChoiceNum - 1;//選択肢と同じ行番号を取得
+                    string choicetitle = episodefileList[lineNum][2];//分岐先名を取得
+                    for (int num = lineNum; num < episodefileList.Count; num++)
+                    {
+                        if (episodefileList[num][0] == choicetitle)
+                        {
+                            lineNum = num;
+                            break;
+                        }
+                    }
+
+                    yield return StartCoroutine(talkingCoroutine(lineNum));
+                    //進んだ行番号へ更新
+                    i = lineNum;
+                    
+                    break;
+                case "":
+                    episodeMode = EpisodeMode.Story;
+                    //ストーリー再生処理
+                    yield return StartCoroutine(talkingCoroutine(i));
+
+                    break;
+                default:
+                    Debug.LogError("コマンドエラーです");
+                    break;
             }
-            else
-            {
-                Debug.LogError("コマンドエラーです");
-                
-            }
+            
             //分岐ストーリー終了後なら
             if(episodeMode == EpisodeMode.End)
             {
@@ -162,9 +184,9 @@ public class EpisodeManager : MonoBehaviour
                 episodeMode = EpisodeMode.Story;
                 //進んだ行番号へ更新
                 i = lineNum;
-                lineNum++;
+                
             }
-          
+            lineNum++;
             yield return null;
         }
         playMode = EpisodePlayMode.End;
@@ -178,9 +200,9 @@ public class EpisodeManager : MonoBehaviour
     public IEnumerator talkingCoroutine(int line)
     {
         //キャラクターの名前があればテキストに(無ければ"")
-        if(episodefileList[line][3] != "")
+        if(episodefileList[line][4] != "")
         {
-            nametxt.text = episodefileList[line][3];
+            nametxt.text = episodefileList[line][4];
         }
         else
         {
@@ -189,17 +211,8 @@ public class EpisodeManager : MonoBehaviour
         
         
         //会話再生
-        for (int i = 4; i < episodefileList[line].Length; i++)
+        for (int i = 5; i < episodefileList[line].Length; i++)
         {
-            switch (episodefileList[line][i])
-            {
-                case "":
-                    break;
-                case "end":
-                    break;
-                default:
-                    break;
-            }
             if(episodefileList[line][i] == "")
             {
                 storytxt.text = null;
@@ -276,10 +289,10 @@ public class EpisodeManager : MonoBehaviour
     /// <summary>
     /// 分岐選択UI表示処理
     /// </summary>
-    public void LoadUI()
+    public IEnumerator LoadUI()
     {
         //選択肢の数に合うButtonが入ったパネルを生成（Prefab）
-        choicePanel = Instantiate(Resources.Load<GameObject>(string.Format("UI/ChoicesPanel_{0}", choiceNum)));
+        choicePanel = Instantiate(Resources.Load<GameObject>($"UI/ChoicesPanel_{choiceNum}"));
         //MainCanvasの子オブジェクトに登録
         choicePanel.transform.SetParent(mainCanvas.transform, false);
         ButtonsObj = new GameObject[choiceNum];
@@ -296,6 +309,8 @@ public class EpisodeManager : MonoBehaviour
             buttonTxt[num].GetComponent<Text>().text = episodefileList[lineNum + num][2];
         }
         EventSystem.current.SetSelectedGameObject(ButtonsObj[0]);
+
+        yield return null;
     }
     /// <summary>
     /// 選択肢が何番目か取得する（初期値0から）
@@ -310,8 +325,9 @@ public class EpisodeManager : MonoBehaviour
 
     public IEnumerator choicePanelDestroy()
     {
-        yield return null;
+        
         Destroy(choicePanel);
+        yield return null;
     }
     /// <summary>
     /// オート再生モード選択時
