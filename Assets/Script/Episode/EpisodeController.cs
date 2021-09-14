@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class EpisodeController : EpisodeManager
 {
-    
+    private void Awake()
+    {
+        filePath = MapManager.SELECT_EPISODE_NAME;
+    }
     void Start()
     {
         mainCanvas = GameObject.FindGameObjectWithTag("Canvas").GetComponent<Canvas>();

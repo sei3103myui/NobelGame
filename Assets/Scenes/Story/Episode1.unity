@@ -876,9 +876,10 @@ MonoBehaviour:
   playMode: 1
   nametxt: {fileID: 1125885869}
   storytxt: {fileID: 633143552}
+  BackImage: {fileID: 1752570162}
   talkSpeed: 0.1
   episodeKeyConfig: 1
-  filePath: Episode1
+  filePath: Episode2
   nextSceneName: Map
   nextButton: {fileID: 9944862}
 --- !u!4 &829271675
