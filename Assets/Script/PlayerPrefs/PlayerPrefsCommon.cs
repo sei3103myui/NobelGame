@@ -9,30 +9,29 @@ using System.Linq;
 
 public class PlayerPrefsCommon : MonoBehaviour
 {
+    public static PlayerPrefsCommon Instance { get; private set; }
+
     public static List<string[]> BOOKS_DATA = new List<string[]>();
     public static List<string[]> MATERIALS_DATA = new List<string[]>();
+    public static List<string[]> PLAY_DATA = new List<string[]>();
 
     public static List<int[]> BooksPlayData = new List<int[]>();
     public static List<int[]> MaterialsPlayData = new List<int[]>();
 
     private string bookPath = default;//アイテムデータ保存先用
     private string materialPath = default;//素材データ保存先用
+    private string playDataPath = default;
     private StreamWriter sw;
     private StreamWriter itemsw;
-    private ReinforcementManager reinforcementManager;
+    
 
     //素材の名前
     private string[] materialName = { "素材1", "素材2", "素材3", "素材4", "素材5", "素材6", "素材7", "素材8", "素材9", "素材10" };
     //素材ファイルのヘッダー
     private string[] materialHeader = { "","ATK", "MP", "TYPE" };
-
-    public void SavePlayer()
-    {
-        //HPセーブ
-        PlayerPrefs.SetFloat("PlayerHP", PlayerStatus.PLAYER_HP);
-        //MPセーブ
-        PlayerPrefs.SetFloat("PlayerMP", PlayerStatus.PLAYER_MP);
-    }
+    //ステータスデータ作成用
+    private string[] playdataHeader = { "HP", "MP", "G" };
+    
     /// 素材データの保存（上書き）
     /// </summary>
     /// <param name="atk"></param>
@@ -54,7 +53,37 @@ public class PlayerPrefsCommon : MonoBehaviour
             }
         }      
     }
-    
+    public void SavePlayData()
+    {
+        PLAY_DATA[1][0] = string.Format("{0}", PlayerStatus.PLAYER_HP);
+        PLAY_DATA[1][1] = string.Format("{0}", PlayerStatus.PLAYER_MP);
+        PLAY_DATA[1][2] = string.Format("{0}", PlayerStatus.Gord);
+
+        string dataPath = Path.Combine(Application.persistentDataPath, string.Format("PlayData_{0}.csv", TitleManager.SELECT_DATA_NUMBER));
+
+        StreamWriter datasw = new StreamWriter(dataPath, false, Encoding.UTF8);
+        if (datasw != null)
+        {
+            for (int i = 0; i < PLAY_DATA.Count; i++)
+            {
+                for (int n = 0; n < PLAY_DATA[i].Length; n++)
+                {
+                    if (n != PLAY_DATA[i].Length - 1)
+                    {
+                        datasw.Write(string.Format("{0},", PLAY_DATA[i][n]));
+                        
+                    }
+                    else
+                    {
+                        datasw.Write(PLAY_DATA[i][n]);
+                    }
+
+                }
+                datasw.Write("\r\n");
+            }
+        }
+        datasw.Close();
+    }
     /// <summary>
     /// アイテムのセーブ
     /// </summary>
@@ -76,7 +105,7 @@ public class PlayerPrefsCommon : MonoBehaviour
                     }
                     else
                     {
-                        sw.Write(string.Format("{0}", BOOKS_DATA[i][n]));
+                        sw.Write(BOOKS_DATA[i][n]);
                     }
 
                 }
@@ -107,7 +136,7 @@ public class PlayerPrefsCommon : MonoBehaviour
                     }
                     else
                     {
-                        itemsw.Write(string.Format("{0}", MATERIALS_DATA[i][n]));
+                        itemsw.Write(MATERIALS_DATA[i][n]);
                     }
                     
                 }
@@ -158,6 +187,8 @@ public class PlayerPrefsCommon : MonoBehaviour
     {
         bookPath = Path.Combine(Application.persistentDataPath, string.Format("book_{0}.csv", TitleManager.SELECT_DATA_NUMBER));
         materialPath = Path.Combine(Application.persistentDataPath, "Items_0.csv");
+        playDataPath = Path.Combine(Application.persistentDataPath, "PlayData_0.csv");
+
         if(!File.Exists(bookPath))//本のデータがなければ
         {
             //本のデータ1～3（book_{n}.csv）を作成
@@ -186,17 +217,20 @@ public class PlayerPrefsCommon : MonoBehaviour
                 StreamWriter sw_material = new StreamWriter(path, false, Encoding.UTF8);
                 if (sw_material != null)
                 {
-                    MATERIALS_DATA.Add(materialHeader);
-                    //素材テンプレートを入れておく
-                    for (int i = 1; i <= materialName.Length; i++)//行 1から素材数まで
+                    if(MATERIALS_DATA.Count == 0)
                     {
+                        MATERIALS_DATA.Add(materialHeader);
+                        //素材テンプレートを入れておく
+                        for (int i = 1; i <= materialName.Length; i++)//行 1から素材数まで
+                        {
 
-                        string zero = string.Format("{0}", materialName[i - 1]);
-                        string[] mt = { zero, "", "", "" };
-                        MATERIALS_DATA.Add(mt);
+                            string zero = string.Format("{0}", materialName[i - 1]);
+                            string[] mt = { zero, "", "", "" };
+                            MATERIALS_DATA.Add(mt);
 
+                        }
                     }
-
+                    
                     //ファイルにテンプレートを書き込み
                     for (int s = 0; s <= materialName.Length; s++)//行の数
                     {
@@ -204,8 +238,36 @@ public class PlayerPrefsCommon : MonoBehaviour
                     }
                 }
                 sw_material.Close();
+            }            
+        }
+
+        if (!File.Exists(playDataPath))//プレイデータが無ければ
+        {
+            for (int m = 0; m <= filesNum; m++)//セーブデータの数だけ
+            {
+                string path = Path.Combine(Application.persistentDataPath, string.Format("PlayData_{0}.csv", m));
+
+                StreamWriter sw_playdata = new StreamWriter(path, false, Encoding.UTF8);
+                if (sw_playdata != null)
+                {
+                    Debug.Log(PLAY_DATA.Count);
+                    if(PLAY_DATA.Count == 0)
+                    {
+                        Debug.Log("PlayDataがnullです");
+                        PLAY_DATA.Add(playdataHeader);
+                        string[] firstdata = { "100", "100", "0" };
+                        PLAY_DATA.Add(firstdata);
+                    }
+                    
+                    //ファイルにテンプレートを書き込み
+                    for (int s = 0; s < PLAY_DATA.Count; s++)//行の数
+                    {
+                        sw_playdata.WriteLine(string.Format("{0},{1},{2}", PLAY_DATA[s][0], PLAY_DATA[s][1], PLAY_DATA[s][2]));
+
+                    }
+                }              
+                sw_playdata.Close();
             }
-            
         }
     }
     /// <summary>
@@ -247,8 +309,9 @@ public class PlayerPrefsCommon : MonoBehaviour
         //パス取得
         string filepath = Path.Combine(Application.persistentDataPath, string.Format("Items_{0}.csv",TitleManager.SELECT_DATA_NUMBER));
         string bookpath = Path.Combine(Application.persistentDataPath, string.Format("book_{0}.csv", TitleManager.SELECT_DATA_NUMBER));
+        string playdatapath = Path.Combine(Application.persistentDataPath, string.Format("PlayData_{0}.csv", TitleManager.SELECT_DATA_NUMBER));
 
-        string[] paths = { filepath, bookpath };
+        string[] paths = { filepath, bookpath , playdatapath };
 
         foreach(string path in paths)
         {
@@ -267,9 +330,12 @@ public class PlayerPrefsCommon : MonoBehaviour
                         {
                             BOOKS_DATA.Add(line.Split(','));
                         }
-                        else
+                        else if(path == playdatapath)
                         {
-                            Debug.Log("パスワードが一致しません");
+                            PLAY_DATA.Add(line.Split(','));
+                        }else
+                        {
+                            Debug.Log("パスが一致しません");
                         }
                         
                     }
@@ -281,15 +347,18 @@ public class PlayerPrefsCommon : MonoBehaviour
     /// 書き換え用データの取得（元データコピー）
     /// </summary>
     public static void PlaydataNewLoad()
-    {
-        
+    {       
         List<int[]> numdata = new List<int[]>();
         for (int i = 0; i < BOOKS_DATA.Count; i++)
         {
             int[] newdata = BOOKS_DATA[i].Select(int.Parse).ToArray();
             BooksPlayData.Add(newdata);
         }
-        
+        //プレイデータようにint型に変換
+        PlayerStatus.PLAYER_HP = int.Parse(PLAY_DATA[1][0]);
+        PlayerStatus.PLAYER_MP = int.Parse(PLAY_DATA[1][1]);
+        PlayerStatus.Gord = int.Parse(PLAY_DATA[1][2]);
+
         for(int i = 1; i < MATERIALS_DATA.Count; i++)
         {
             int[] itemsnum = new int[MATERIALS_DATA[i].Length - 1];
@@ -308,8 +377,10 @@ public class PlayerPrefsCommon : MonoBehaviour
             MaterialsPlayData.Add(itemsnum);
         }
     }
-
-    public static void PlaydataStringFormat()
+    /// <summary>
+    /// 素材データの保存準備（intからstiring)
+    /// </summary>
+    public static void MaterialPlaydataStringFormat()
     {
         for (int i = 0; i < MaterialsPlayData.Count; i++)
         {
@@ -320,6 +391,9 @@ public class PlayerPrefsCommon : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// アイテムデータの保存準備（intからstiring)
+    /// </summary>
     public static void BookPlaydataStringFormat()
     {
 
@@ -331,7 +405,10 @@ public class PlayerPrefsCommon : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// 引数で指定した番号と同じ要素番号の素材データを削除
+    /// </summary>
+    /// <param name="materialNumber"></param>
     public static void MaterialDataDelete(int materialNumber)
     {
         for(int i = 0; i < MaterialsPlayData[materialNumber].Length; i++)
